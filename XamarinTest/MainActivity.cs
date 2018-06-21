@@ -19,7 +19,7 @@ namespace XamarinTest
         {
             base.OnCreate(savedInstanceState);
 
-            clsock = ClientSocket.GetInstance("192.168.1.35", 1488);
+            //clsock.Connect();
             SetContentView(Resource.Layout.activity_main);
 
             Android.Support.V7.Widget.Toolbar toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
@@ -36,29 +36,46 @@ namespace XamarinTest
             btn_send.Click += Send;
 
 
-            if (savedInstanceState == null || !savedInstanceState.ContainsKey("server") ||
+            if (savedInstanceState == null ||
                 !savedInstanceState.ContainsKey("message") || !savedInstanceState.ContainsKey("reply"))
                 return;
             textbox_send.Text = savedInstanceState.GetString("message");
-            textbox_server.Text = savedInstanceState.GetString("server");
+            //textbox_server.Text = savedInstanceState.GetString("server");
             textbox_receive.Text = savedInstanceState.GetString("reply");
         }
 
         protected override void OnSaveInstanceState(Bundle outState)
         {
             outState.PutString("message", textbox_send.Text);
-            outState.PutString("server", textbox_server.Text);
+            //outState.PutString("server", textbox_server.Text);
             outState.PutString("reply", textbox_receive.Text);
 
             base.OnSaveInstanceState(outState);
+        }
+
+        protected override void OnPause()
+        {
+            base.OnPause();
+            Disconnect();
+        }
+
+        private async void Disconnect()
+        {
+            await clsock.ClientWork("Disconnect");
+            clsock.Disconnect();
+        }
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+            clsock = ClientSocket.GetInstance("192.168.1.35", 1488);
         }
         
 
         protected override void OnDestroy()
         {
+            textbox_server.Text = "IP сервера:";
             base.OnDestroy();
-            clsock.ClientWork("Disconnect").GetAwaiter().GetResult();
-            clsock.Disconnect();
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)
@@ -82,6 +99,7 @@ namespace XamarinTest
         {
             await clsock.Connect();
             textbox_server.Text = "IP сервера: 192.168.1.35";
+            btn_send.Enabled = true;
         }
 
         private async void Send(object sender, EventArgs e)

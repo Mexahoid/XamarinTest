@@ -35,34 +35,30 @@ namespace XamarinTest
             return instance ?? (instance = new ClientSocket(addr, port));
         }
         
-        
 
         public async Task Connect()
         {
-            tcpClient = new TcpClient();
-            //Console.WriteLine("[Client] Connecting to server");
+            if(tcpClient == null)
+                tcpClient = new TcpClient();
             await tcpClient.ConnectAsync(addr, port);
-            //Console.WriteLine("[Client] Connected to server");
             networkStream = tcpClient.GetStream();
         }
 
         public async Task<string> ClientWork(string text)
         {
+            if (tcpClient == null)
+                return "Was not connected";
             string res = await SendMessage(text);
-            return $"Server response was {res}";
-            //Console.WriteLine("[Client] Server response was {0}", res);
-            //}
+            return $"Server response was: \"{res}\"";
         }
 
         private async Task<string> SendMessage(string message)
         {
-            //Console.WriteLine($"[Client] Writing request {message}");
             var bytes = Encoding.UTF8.GetBytes(message);
             await networkStream.WriteAsync(bytes, 0, bytes.Length);
 
             var buffer = new byte[4096];
             var byteCount = await networkStream.ReadAsync(buffer, 0, buffer.Length);
-            //networkStream.Flush();
             return Encoding.UTF8.GetString(buffer, 0, byteCount);
         }
 
@@ -72,10 +68,14 @@ namespace XamarinTest
             {
                 networkStream.Flush();
                 networkStream.Close();
+                networkStream = null;
             }
 
-            if (tcpClient != null && tcpClient.Connected)
+            if (tcpClient != null)
+            {
                 tcpClient.Close();
+                tcpClient = null;
+            }
         }
     }
 }
