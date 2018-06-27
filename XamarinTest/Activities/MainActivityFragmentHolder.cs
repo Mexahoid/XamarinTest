@@ -13,7 +13,7 @@ using Android.Views;
 using Android.Widget;
 using XamarinTest.Folders;
 
-namespace XamarinTest.MainActivity
+namespace XamarinTest.Activities
 {
     public class MainActivityFragmentHolder : Android.Support.V4.App.Fragment
     {

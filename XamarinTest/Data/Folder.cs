@@ -16,11 +16,27 @@ namespace XamarinTest.Data
     {
         public string FolderName { get; }
         private readonly List<Sound> sounds;
-        public bool Checked { get; set; }
+        private event Action<Folder> Notify;
 
-        public Folder(string folderName)
+        public bool Checked
         {
+            get => _checked;
+            set
+            {
+                if(_checked != value)
+                    Notify?.Invoke(this);
+                _checked = value;
+            }
+        }
+
+        private int checkedCount;
+        private bool _checked;
+
+        public Folder(string folderName, Action<Folder> notifier)
+        {
+            Notify += notifier;
             FolderName = folderName;
+            checkedCount = 0;
             sounds = new List<Sound>();
         }
 
@@ -28,7 +44,22 @@ namespace XamarinTest.Data
         {
             foreach (string name in names)
             {
-                sounds.Add(new Sound(name));
+                sounds.Add(new Sound(name, SoundCheckHandler));
+            }
+        }
+
+        private void SoundCheckHandler(bool check)
+        {
+            if (check)
+            {
+                checkedCount++;
+                Checked = true;
+            }
+            else
+            {
+                checkedCount--;
+                if(checkedCount == 0)
+                    Checked = false;
             }
         }
 

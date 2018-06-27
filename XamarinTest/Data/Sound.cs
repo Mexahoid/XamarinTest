@@ -14,12 +14,25 @@ namespace XamarinTest.Data
 {
     public class Sound
     {
+        private bool _checked;
         public string Name { get; }
-        public bool Checked { get; set; }
 
-        public Sound(string name)
+        public bool Checked
+        {
+            get => _checked;
+            set
+            {
+                _checked = value;
+                CheckChanged?.Invoke(_checked);
+            }
+        }
+
+        private event Action<bool> CheckChanged;
+
+        public Sound(string name, Action<bool> checkHandler)
         {
             Name = name;
+            CheckChanged += checkHandler;
         }
     }
 }

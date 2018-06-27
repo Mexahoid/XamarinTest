@@ -13,12 +13,12 @@ namespace XamarinTest.Folders
         private readonly TextView folderNameTextView;
         private readonly CheckBox checkBox;
         private int index;
-        private event Action<int, bool> Clicker; 
+        private event Action<int> Clicker;
 
 
-        public FolderListFragmentHolder(View itemView, Action<int, bool> clickHandler) : base(itemView)
+        public FolderListFragmentHolder(View itemView, Action<int> clicker) : base(itemView)
         {
-            Clicker += clickHandler;
+            Clicker += clicker;
             folderNameTextView = itemView.FindViewById<TextView>(Resource.Id.folder_frag_list_title);
             checkBox = itemView.FindViewById<CheckBox>(Resource.Id.folder_frag_list_checkbox);
         }
@@ -28,11 +28,8 @@ namespace XamarinTest.Folders
             index = iindex;
             folderNameTextView.Text = folder.FolderName;
             checkBox.Checked = folder.Checked;
-            checkBox.Click += (sender, e) =>
-            {
-                Clicker?.Invoke(index, ((CheckBox) sender).Checked);
-            };
+            ItemView.Click += (sender, e) => Clicker?.Invoke(index);
         }
-        
+
     }
 }

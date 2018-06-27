@@ -55,17 +55,22 @@
     <Reference Include="Mono.Android" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activities\SoundActivityFragmentHolder.cs" />
     <Compile Include="ClientSocket.cs" />
     <Compile Include="Data\Folder.cs" />
     <Compile Include="Data\Sound.cs" />
     <Compile Include="Folders\FolderListFragmentAdapter.cs" />
     <Compile Include="Folders\FolderListFragmentHolder.cs" />
     <Compile Include="Folders\FolderListFragmentItem.cs" />
-    <Compile Include="MainActivity\MainActivity.cs" />
-    <Compile Include="MainActivity\MainActivityFragmentHolder.cs" />
+    <Compile Include="Activities\MainActivity.cs" />
+    <Compile Include="Activities\MainActivityFragmentHolder.cs" />
+    <Compile Include="Activities\SoundActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Data\FolderStorage.cs" />
+    <Compile Include="Sounds\SoundListFragmentItem.cs" />
+    <Compile Include="Sounds\SoundListFragmentAdapter.cs" />
+    <Compile Include="Sounds\SoundListFragmentHolder.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -116,9 +121,28 @@
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\sounds_fragment_list_item.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\activity_fragment.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\sounds_fragment_holder.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\activity_sounds.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\activity_sounds_fragment.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
